@@ -1,22 +1,32 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { signIn } from "@/auth";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+      action={async () => {
+        "use server";
+        await signIn("google");
+      }}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login with your Google account</h1>
+        {/* HEADING */}
+        <h1 className="text-2xl sm:text-3xl font-semibold">
+          Login with your Google account
+        </h1>
         <p className="text-muted-foreground text-sm text-balance">
           {/* PLACEHOLDER TEXT */}
         </p>
       </div>
       <div className="grid gap-6">
         <Button
+          type="submit"
           className="w-full bg-chart-1 
         text-primary-foreground dark:text-secondary-foreground font-semibold"
         >

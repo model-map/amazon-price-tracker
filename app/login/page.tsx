@@ -1,7 +1,6 @@
 import { TrendingUp } from "lucide-react";
 
 import { LoginForm } from "@/components/login-form";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -10,7 +9,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10 ">
         {/* LOGO */}
         <div className="flex justify-center gap-2 md:justify-start">
-          <Link href="#" className="flex items-center gap-2 font-medium">
+          <Link href="/" className="flex items-center gap-2 font-medium">
             <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <TrendingUp className="size-4" />
             </div>

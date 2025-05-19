@@ -19,6 +19,8 @@ An Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN compo
 1. [Getting Started](#getting-started)
    - [Setting Up ShadCN and Next.js](#setting-up-shadcn-and-nextjs)
    - [Setting Up Prisma with PostgreSQL](#setting-up-prisma-with-postgresql)
+   - [Setting Up Auth.js](#setting-up-authjs)
+   - [Setting Up Google OAuth](#setting-up-google-oauth)
 2. [Project Structure](#project-structure)
 3. [Environment Variables](#environment-variables)
 4. [Contributing](#contributing)
@@ -78,18 +80,137 @@ We use **Neon.tech** to host a free **PostgreSQL** database. Follow these steps 
    pnpm dlx prisma generate
    ```
 
-5. **Add `db:migrate` Script to `package.json`**:
-   Add the following script to the `scripts` section of your `package.json` for easy database migrations whenever you make changes to your `schema.prisma` file:
+5. **Run Database Migrations**:
+   Add the following script to the `scripts` section of your `package.json` for easy database migrations:
 
    ```json
    "db:migrate": "pnpm dlx prisma migrate dev --name init"
    ```
 
+   Then run:
+
+   ```bash
+   pnpm db:migrate
+   ```
+
 6. **Add `.gitignore` Entry**:
    Ensure the `generate/prisma` directory is ignored by Git by adding it to your `.gitignore` file:
+
    ```
    generate/prisma
    ```
+
+---
+
+### Setting Up Auth.js
+
+Follow these steps to integrate **Auth.js** into your project:
+
+1. **Install Auth.js**:
+   Install the `next-auth` package:
+
+   ```bash
+   pnpm add next-auth@beta
+   ```
+
+2. **Generate a Secret Key**:
+   Generate a secret key for session encryption:
+
+   ```bash
+   pnpm dlx auth secret
+   ```
+
+3. **Create `auth.ts`**:
+   Create an `auth.ts` file in the root directory with the following content:
+
+   ```ts
+   import NextAuth from "next-auth";
+
+   export const { handlers, signIn, signOut, auth } = NextAuth({
+     providers: [],
+   });
+   ```
+
+4. **Create `route.ts`**:
+   Create a `route.ts` file in `/api/auth/[...nextauth]/route.ts` with the following content:
+
+   ```ts
+   import { handlers } from "@/auth"; // Referring to the auth.ts we just created
+   export const { GET, POST } = handlers;
+   ```
+
+5. **Optional Middleware**:
+   To keep the session alive, add the following middleware in the root folder `/middleware.ts`:
+
+   ```ts
+   export { auth as middleware } from "@/auth";
+   ```
+
+---
+
+### Setting Up Google OAuth
+
+#### Reference
+
+[Auth.js OAuth Documentation](https://authjs.dev/getting-started/authentication/oauth)
+
+#### Steps:
+
+1. **Google Cloud Console**:
+
+   - Navigate to the [Google Cloud Console](https://console.cloud.google.com/).
+   - Search for **OAuth Credentials**.
+   - Create credentials and select **OAuth Client ID**.
+   - Choose **Web Application** as the application type.
+
+2. **Authorized Redirect URIs**:
+
+   - Add the following URI to the **Authorized redirect URIs** section:
+     ```
+     [origin]/api/auth/callback/google
+     ```
+     Replace `[origin]` with:
+     - `http://localhost:3000` during development.
+     - Your deployed application URL in production.
+
+3. **Environment Variables**:
+
+   - Add the generated `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` to your `.env.local` file:
+     ```env
+     AUTH_GOOGLE_ID="your_google_oauth_id"
+     AUTH_GOOGLE_SECRET="your_google_oauth_secret"
+     ```
+
+4. **Set Up Provider**:
+
+   - Update `auth.ts` with the following code:
+
+     ```ts
+     import NextAuth from "next-auth";
+     import Google from "next-auth/providers/google";
+
+     export const { handlers, signIn, signOut, auth } = NextAuth({
+       providers: [Google],
+     });
+     ```
+
+   - In `/api/auth/[...nextauth]/route.ts`, add the handlers so Auth.js can handle incoming requests:
+
+     ```ts
+     import { handlers } from "@/auth";
+     export const { GET, POST } = handlers;
+     ```
+
+5. **Add Login Action**:
+
+   - Add the following `action` to your form element to enable Google login:
+
+     ```tsx
+     action={async () => {
+       "use server";
+       await signIn("google");
+     }}
+     ```
 
 ---
 
@@ -118,6 +239,8 @@ Create a `.env` file in the root of your project and add the following variables
 DATABASE_URL="your_postgresql_url_here"  # PostgreSQL database URL from Neon.tech
 NEXTAUTH_SECRET="your_nextauth_secret"   # Secret for NextAuth session encryption
 SMARTPROXY_API_KEY="your_smartproxy_key" # API key for Smartproxy
+AUTH_GOOGLE_ID="your_google_oauth_id"    # Google OAuth Client ID
+AUTH_GOOGLE_SECRET="your_google_oauth_secret" # Google OAuth Client Secret
 ```
 
 ---
