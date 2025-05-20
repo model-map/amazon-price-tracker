@@ -12,7 +12,7 @@ const Navbar02Page = () => {
         <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* LOGO */}
           <div className="flex items-center gap-12">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 font-bold">
               <TrendingUp size={30} />
               <h1 className="text-xl">Amazon Price Tracker</h1>
             </Link>

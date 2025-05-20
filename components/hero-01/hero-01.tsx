@@ -10,7 +10,7 @@ const Hero01 = () => {
       <div className="text-center max-w-2xl">
         {/* HEADING */}
         <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold">
-          Tracke Prices, Save More
+          Track Prices, Save More
         </h1>
         {/* DESCRIPTION */}
         <p className="mt-6 text-[17px] md:text-lg">
