@@ -1,16 +1,16 @@
 # Amazon Price Tracker
 
-An Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN components**, **NextAuth/Auth.js**, **Smartproxy**, and **PostgreSQL** with **Prisma** for database management.
+A modern Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN components**, **NextAuth/Auth.js**, **Smartproxy**, and **PostgreSQL** with **Prisma** for database management.
 
 ---
 
 ## Features
 
 - Track Amazon product prices over time.
-- Authenticate users with **NextAuth/Auth.js**.
+- User authentication with **NextAuth/Auth.js**.
 - Fetch product data using **Smartproxy** for web scraping.
-- Store and manage data in a **PostgreSQL** database using **Prisma ORM**.
-- Built with modern tools like **TailwindCSS** and **ShadCN components** for a sleek UI.
+- Store and manage data in a **PostgreSQL** database via **Prisma ORM**.
+- Modern UI powered by **TailwindCSS** and **ShadCN components**.
 
 ---
 
@@ -21,7 +21,7 @@ An Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN compo
    - [Setting Up Prisma with PostgreSQL](#setting-up-prisma-with-postgresql)
    - [Setting Up Auth.js](#setting-up-authjs)
    - [Setting Up Google OAuth](#setting-up-google-oauth)
-   - [Adding dynamic rendering based on session]
+   - [Dynamic Rendering Based on Session](#dynamic-rendering-based-on-session)
 2. [Project Structure](#project-structure)
 3. [Environment Variables](#environment-variables)
 4. [Contributing](#contributing)
@@ -213,16 +213,33 @@ Follow these steps to integrate **Auth.js** into your project:
      }}
      ```
 
-### Setting Dynamic rendering based on session
+---
 
-- session object can be accessed via the async `auth()` function provided by `@/auth`
+### Dynamic Rendering Based on Session
 
-```
-import {auth} from "@/auth";
+The session object can be accessed via the `auth()` function provided by `@/auth`:
+
+```ts
+import { auth } from "@/auth";
 const session = await auth();
 ```
 
-## It's generally a good practice to
+Use this to dynamically render content based on whether the user is logged in.
+
+---
+
+### Creating Sign Out
+
+Add the following `action` to your form element to enable Google logout:
+
+```tsx
+action={async () => {
+  "use server";
+  await signOut();
+}}
+```
+
+---
 
 ## Project Structure
 
