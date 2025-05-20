@@ -21,6 +21,7 @@ An Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN compo
    - [Setting Up Prisma with PostgreSQL](#setting-up-prisma-with-postgresql)
    - [Setting Up Auth.js](#setting-up-authjs)
    - [Setting Up Google OAuth](#setting-up-google-oauth)
+   - [Adding dynamic rendering based on session]
 2. [Project Structure](#project-structure)
 3. [Environment Variables](#environment-variables)
 4. [Contributing](#contributing)
@@ -212,7 +213,16 @@ Follow these steps to integrate **Auth.js** into your project:
      }}
      ```
 
----
+### Setting Dynamic rendering based on session
+
+- session object can be accessed via the async `auth()` function provided by `@/auth`
+
+```
+import {auth} from "@/auth";
+const session = await auth();
+```
+
+## It's generally a good practice to
 
 ## Project Structure
 

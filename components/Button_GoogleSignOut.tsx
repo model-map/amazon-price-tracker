@@ -1,13 +1,15 @@
-import { signIn } from "@/auth";
+import { signOut } from "@/auth";
 import { Button } from "./ui/button";
 import Image from "next/image";
 
-const Button_GoogleSignIn = () => {
+const Button_GoogleSignOut = () => {
   return (
     <form
       action={async () => {
         "use server";
-        await signIn("google");
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Add a delay of 1 second
+
+        await signOut();
       }}
     >
       <Button
@@ -21,10 +23,10 @@ const Button_GoogleSignIn = () => {
       "
       >
         <Image src="/google.svg" alt="Google" width={22} height={50} />
-        Sign In
+        Sign Out
       </Button>
     </form>
   );
 };
 
-export default Button_GoogleSignIn;
+export default Button_GoogleSignOut;

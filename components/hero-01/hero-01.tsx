@@ -1,11 +1,21 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowUpRight, CirclePlay } from "lucide-react";
-import React from "react";
+import getSession from "@/lib/session";
 import Button_GoogleSignIn from "../Button_GoogleSignIn";
 
-const Hero01 = () => {
-  return (
+const Hero01 = async () => {
+  const session = await getSession();
+
+  return session ? (
+    // IF USER IS LOGGED IN
+    <div className="mt-24 flex items-center justify-center px-6">
+      <div className="text-center max-w-2xl">
+        {/* HEADING */}
+        <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold">
+          Welcome back, {session.user?.name}
+        </h1>
+      </div>
+    </div>
+  ) : (
+    // IF USER IS NOT LOGGED IN
     <div className="mt-24 flex items-center justify-center px-6">
       <div className="text-center max-w-2xl">
         {/* HEADING */}
@@ -18,7 +28,7 @@ const Hero01 = () => {
           smart shoppers like you! Simplify your shopping and maximize your
           savings with our handy tools designed to work as hard as you do!
         </p>
-        <div className="mt-12 flex items-center justify-center w-full ">
+        <div className="mt-12 flex items-center justify-center w-full">
           <Button_GoogleSignIn />
         </div>
       </div>
