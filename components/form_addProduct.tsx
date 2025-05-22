@@ -16,7 +16,15 @@ import {
 } from "@/components/ui/form";
 
 const formSchema = z.object({
-  productLink: z.string().min(2),
+  // productLink: z.string().min(2),
+  productLink: z.custom<string>((val) => {
+    // CHECKS IF THE LINK INCLUDES AMAZON.IN
+    // AND
+    // IF IT CONTAINS A 10-DIGIT ASIN NUMBER
+    return (
+      !!val.includes("amazon.in") && val.match(/\/([A-Z0-9]{10})(?:[\/?]|$)/i)
+    );
+  }, "Invalid Amazon India product link"),
 });
 
 const Form_addProduct = () => {
@@ -29,13 +37,10 @@ const Form_addProduct = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // GETTING AMAZON PRODUCT ID
-    const link = values.productLink;
-    const isAmazonLink = !!link.includes("amazon.in");
-    if (isAmazonLink) {
-      const match = link.match(/\/([A-Z0-9]{10})(?:[\/?]|$)/i);
-      const productID = match ? match[1] : null;
-      console.log(productID);
-    }
+    const link = values.productLink as string;
+    const match = link.match(/\/([A-Z0-9]{10})(?:[\/?]|$)/i);
+    const productID = match ? match[1] : null;
+    console.log(productID);
   }
 
   return (
