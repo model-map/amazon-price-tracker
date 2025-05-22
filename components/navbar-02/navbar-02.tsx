@@ -10,18 +10,18 @@ import Button_GoogleSignOut from "../Button_GoogleSignOut";
 const Navbar02Page = async () => {
   const session = await getSession();
   return (
-    <div className="bg-muted">
+    <div className="bg-muted md:ml-8 ">
       <nav className="h-16 bg-background border-b">
-        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-full flex items-center justify-between max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-2">
           {/* LOGO */}
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-12 md:ml-6 lg:ml-13">
             <Link href="/" className="flex items-center gap-2 font-bold">
               <TrendingUp size={30} />
-              <h1 className="text-xl">Amazon Price Tracker</h1>
+              <h1 className="sm:text-base md:text-xl">Amazon Price Tracker</h1>
             </Link>
 
             {/* Desktop Menu */}
-            <NavMenu className="hidden md:block" />
+            <NavMenu className="hidden md:block " />
           </div>
 
           <div className="flex items-center gap-3">

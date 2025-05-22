@@ -42,10 +42,26 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-button-1: var(--button-1);
+
+  /* FADE IN ANIMATION 1S */
+  --animate-fade-1s: fade 1s ease-in-out;
+  --animate-fade-2s: fade 2s ease-in-out;
+  --animate-fade-3s: fade 3s ease-in-out;
+  --animate-fade-4s: fade 4s ease-in-out;
+  --animate-fade-5s: fade 5s ease-in-out;
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }
 
 :root {
   --radius: 0.625rem;
+  --spacing: 0.25rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);

@@ -1,5 +1,8 @@
+import Dashboard from "@/components/Dashboard";
 import Features01Page from "@/components/features-01/features-01";
+import Footer05Page from "@/components/footer-05/footer-05";
 import Hero01 from "@/components/hero-01/hero-01";
+import Navbar02Page from "@/components/navbar-02/navbar-02";
 import Testimonial01 from "@/components/testimonial-01/testimonial-01";
 import getSession from "@/lib/session";
 
@@ -20,13 +23,15 @@ export default async function Home() {
         </pre>
       )} */}
 
-      <Hero01 />
       {!session && (
         <>
+          <Hero01 />
           <Features01Page />
           <Testimonial01 />
         </>
       )}
+
+      {session && <Dashboard />}
     </div>
   );
 }

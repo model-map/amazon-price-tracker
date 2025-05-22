@@ -1,26 +1,17 @@
 import getSession from "@/lib/session";
 import Button_GoogleSignIn from "../Button_GoogleSignIn";
 
-const Hero01 = async () => {
-  const session = await getSession();
+const Hero01 = () => {
+  // const session = await getSession();
 
-  return session ? (
-    // IF USER IS LOGGED IN
-    <div className="mt-24 flex items-center justify-center px-6">
-      <div className="text-center max-w-2xl">
-        {/* HEADING */}
-        <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold">
-          Welcome back, {session.user?.name}
-        </h1>
-      </div>
-    </div>
-  ) : (
+  return (
     // IF USER IS NOT LOGGED IN
     <div className="mt-24 flex items-center justify-center px-6">
       <div className="text-center max-w-2xl">
         {/* HEADING */}
-        <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold">
-          Track Prices, Save More
+        <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl md:leading-[1.2] font-bold animate-fade-2s">
+          Track Prices,{" "}
+          <span className="text-blue-500  animate-fade-4s">Save More</span>
         </h1>
         {/* DESCRIPTION */}
         <p className="mt-6 text-[17px] md:text-lg">
