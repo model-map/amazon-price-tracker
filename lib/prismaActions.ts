@@ -29,7 +29,7 @@ export async function getPrismaDataById(productID: string) {
 
 export async function getPrismaData() {
   const allProducts = await prisma.product.findMany();
-  console.log("[in /lib/prismaActions.ts] ALL PRODUCTS: ", allProducts);
+  return allProducts;
 }
 
 export async function setPrismaData(product: IProduct) {
@@ -37,6 +37,6 @@ export async function setPrismaData(product: IProduct) {
     data: product,
   });
 
-  const allProducts = await getPrismaData();
+  const allProducts = await getPrismaDataById(product.asin);
   console.dir(allProducts, { depth: null });
 }

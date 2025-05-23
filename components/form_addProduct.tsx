@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { addProduct } from "@/actions/productActions";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const Form_addProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,14 +86,24 @@ const Form_addProduct = () => {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="bg-blue-500 
+        {isLoading ? (
+          <Button
+            disabled
+            className="bg-blue-500 
           text-primary-foreground dark:text-primary font-semibold"
-          disabled={isLoading}
-        >
-          Add Product
-        </Button>
+          >
+            <Loader2 className="animate-spin" />
+            Please wait
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="bg-blue-500 
+          text-primary-foreground dark:text-primary font-semibold"
+          >
+            Add Product
+          </Button>
+        )}
       </form>
     </Form>
   );
