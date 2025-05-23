@@ -1,4 +1,3 @@
-import getSession from "@/lib/session";
 import Button_GoogleSignIn from "../Button_GoogleSignIn";
 
 const Hero01 = () => {

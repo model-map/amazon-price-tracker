@@ -20,7 +20,7 @@ const Button_GoogleSignIn = () => {
       dark:text-primary
       "
       >
-        <Image src="/google.svg" alt="Google" width={22} height={50} />
+        <Image src="/google.svg" alt="Google" width={22} height={22} />
         Sign In
       </Button>
     </form>

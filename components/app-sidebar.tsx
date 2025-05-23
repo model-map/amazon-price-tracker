@@ -3,13 +3,9 @@
 import * as React from "react";
 import { IconHelp, IconSettings } from "@tabler/icons-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -32,11 +28,6 @@ const data = {
       title: "All Products",
       url: "/",
       icon: List,
-    },
-    {
-      title: "Add Product",
-      url: "/add-product",
-      icon: Box,
     },
     {
       title: "Notifications",

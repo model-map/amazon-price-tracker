@@ -8,7 +8,7 @@ A modern Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN
 
 - Track Amazon product prices over time.
 - User authentication with **NextAuth/Auth.js**.
-- Fetch product data using **Smartproxy** for web scraping.
+- Fetch product data using **Oxylabs API** for web scraping.
 - Store and manage data in a **PostgreSQL** database via **Prisma ORM**.
 - Modern UI powered by **TailwindCSS** and **ShadCN components**.
 
@@ -22,6 +22,7 @@ A modern Amazon price tracker built using **Next.js**, **TailwindCSS**, **ShadCN
    - [Setting Up Auth.js](#setting-up-authjs)
    - [Setting Up Google OAuth](#setting-up-google-oauth)
    - [Dynamic Rendering Based on Session](#dynamic-rendering-based-on-session)
+   - [Adding Products, Setting up form action]
 2. [Project Structure](#project-structure)
 3. [Environment Variables](#environment-variables)
 4. [Contributing](#contributing)
@@ -228,7 +229,7 @@ Use this to dynamically render content based on whether the user is logged in.
 
 ---
 
-### Creating Sign Out
+#### Creating Sign Out
 
 Add the following `action` to your form element to enable Google logout:
 
@@ -238,6 +239,15 @@ action={async () => {
   await signOut();
 }}
 ```
+
+---
+
+### Adding Products to database, Setting up Form Actions
+
+- Create a folder named `action` in root, and create a file named `productActions.ts`
+
+- In the form element to add products, add
+  `action={async () => {}}`
 
 ---
 
