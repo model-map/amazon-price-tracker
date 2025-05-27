@@ -1,17 +1,20 @@
 "use server";
 
-import { getPrismaDataById, setPrismaData } from "@/lib/prismaActions";
+import { getProductsById, setPrismaData } from "@/lib/prismaActions";
 
 import { getLogger } from "@/lib/logger";
+import { redirect } from "next/navigation";
+import getSession from "@/lib/session";
 
 export async function addProduct(productId: string) {
   const logger = getLogger();
+  const session = await getSession();
 
   // CHECK IF ProductID already exists in DB
   logger.info(
     `Checking if product with productID: ${productId} is already in DB`
   );
-  const isProductInDB = !!(await getPrismaDataById(productId));
+  const isProductInDB = !!(await getProductsById(productId));
 
   if (isProductInDB) {
     logger.info(
@@ -57,9 +60,11 @@ export async function addProduct(productId: string) {
             const { url, asin, price, title, images, reviews_count, rating } =
               productInfo;
             const img = images[0];
+            const userEmail = session?.user?.email;
 
             // THE OBJECT TO STORE IN PRISMA
-            const product = {
+            const data = {
+              userEmail,
               url,
               asin,
               price,
@@ -70,17 +75,19 @@ export async function addProduct(productId: string) {
             };
 
             // ADD PRODUCT TO DB
-            await setPrismaData(product);
+            await setPrismaData(data);
           }
         }
       };
 
-      scrape();
+      await scrape();
     } catch (error) {
       if (error instanceof Error) {
         logger.error(error.message);
       } else {
         logger.error("Unexpected error occured while adding product to DB");
       }
+    } finally {
+      return;
     }
 }

@@ -58,7 +58,6 @@ export default async function RootLayout({
               }
             >
               <AppSidebar />
-
               {/* <Sidebar variant="inset" /> */}
               <SidebarInset>
                 <main>{children}</main>

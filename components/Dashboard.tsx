@@ -3,6 +3,7 @@ import { SectionCards } from "./section-cards";
 import { SiteHeader } from "./site-header";
 import Form_addProduct from "./form_addProduct";
 import { Label } from "./ui/label";
+import ProductCard from "./ProductCard";
 
 const Dashboard = () => {
   return (
@@ -16,7 +17,6 @@ const Dashboard = () => {
         <div className="col-span-2 my-10">
           <Form_addProduct />
         </div>
-        <SectionCards />
         <SectionCards />
       </div>
     </div>

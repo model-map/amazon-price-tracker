@@ -1,18 +1,10 @@
 import { PrismaClient } from "@/generated/prisma";
-
-interface IProduct {
-  url: string;
-  asin: string;
-  price: number;
-  title: string;
-  img: string;
-  reviews_count: number;
-  rating: number;
-}
+import { IProduct } from "./types";
+import getSession from "./session";
 
 const prisma = new PrismaClient();
 
-export async function getPrismaDataById(productID: string) {
+export async function getProductsById(productID: string) {
   try {
     const product = await prisma.product.findFirst({
       where: { asin: productID },
@@ -27,8 +19,12 @@ export async function getPrismaDataById(productID: string) {
   }
 }
 
-export async function getPrismaData() {
-  const allProducts = await prisma.product.findMany();
+export async function getProducts() {
+  const session = await getSession();
+  const userEmail = session?.user?.email as string;
+  const allProducts = await prisma.product.findMany({
+    where: { userEmail: userEmail },
+  });
   return allProducts;
 }
 
@@ -37,6 +33,6 @@ export async function setPrismaData(product: IProduct) {
     data: product,
   });
 
-  const allProducts = await getPrismaDataById(product.asin);
+  const allProducts = await getProductsById(product.asin);
   console.dir(allProducts, { depth: null });
 }

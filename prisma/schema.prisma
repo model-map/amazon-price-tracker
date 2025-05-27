@@ -10,13 +10,14 @@ datasource db {
 
 model Product {
   id            Int      @id @default(autoincrement())
-  title         String
-  img           String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  price         Int
+  userEmail     String
   url           String
   asin          String
-  rating        Int
+  price         Int
+  title         String
+  img           String
   reviews_count Int
+  rating        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
