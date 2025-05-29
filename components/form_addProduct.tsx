@@ -17,9 +17,11 @@ import {
 import { addProduct } from "@/actions/productActions";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const Form_addProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState(<></>);
 
   const formSchema = z.object({
     productLink: z.custom<string>((val) => {
@@ -53,8 +55,19 @@ const Form_addProduct = () => {
     }
 
     try {
-      await addProduct(productID);
+      const response = await addProduct(productID);
       form.reset(); // Optional: reset form after successful submission
+      if (response.success) {
+        setServerMessage(
+          <span className="text-green-500 font-semibold">
+            {response.message}
+          </span>
+        );
+      } else {
+        setServerMessage(
+          <span className="text-red-500 font-semibold">{response.message}</span>
+        );
+      }
     } catch (error) {
       console.error("Error adding product:", error);
     } finally {
@@ -64,7 +77,11 @@ const Form_addProduct = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-2"
+        // onFocus={() => setServerMessage(<></>)}
+      >
         <FormField
           control={form.control}
           name="productLink"
@@ -82,6 +99,9 @@ const Form_addProduct = () => {
                 />
               </FormControl>
               <FormDescription>Paste Amazon product link here</FormDescription>
+              {serverMessage && (
+                <FormDescription>{serverMessage}</FormDescription>
+              )}
               <FormMessage />
             </FormItem>
           )}

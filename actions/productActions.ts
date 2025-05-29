@@ -1,14 +1,14 @@
 "use server";
 
-import { getProductsById, setPrismaData } from "@/lib/prismaActions";
+import { getProductsById, setUserProducts } from "@/lib/prismaActions";
 
 import { getLogger } from "@/lib/logger";
-import { redirect } from "next/navigation";
-import getSession from "@/lib/session";
+import { productScraper } from "@/lib/productScraper";
+import { IProduct } from "@/lib/types";
+import { NextResponse } from "next/server";
 
 export async function addProduct(productId: string) {
   const logger = getLogger();
-  const session = await getSession();
 
   // CHECK IF ProductID already exists in DB
   logger.info(
@@ -20,74 +20,33 @@ export async function addProduct(productId: string) {
     logger.info(
       `Product with the productId: ${productId} already exists in DB.`
     );
+    return {
+      success: false,
+      message: "Product is already being tracked",
+    };
   } else
     try {
-      const scrape = async () => {
-        const username = process.env.OXYLABS_USERNAME;
-        const password = process.env.OXYLABS_PASSWORD;
-        const body = {
-          source: "amazon_product",
-          parse: true,
-          domain: "in",
-          user_agent_type: "desktop_chrome",
-          query: productId,
-        };
+      const scrapedData = (await productScraper(productId)) as IProduct;
+      // ADD PRODUCT TO PRODUCTS DB
+      await setUserProducts(scrapedData);
 
-        logger.info("Making fetch request to retrieve product data from API");
-        const response = await fetch("https://realtime.oxylabs.io/v1/queries", {
-          method: "post",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Basic " +
-              Buffer.from(`${username}:${password}`).toString("base64"),
-          },
-        });
+      // REFRESHING PRICE HISTORY
+      // await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/refresh`);
 
-        if (response) {
-          const data = await response.json();
-          const productInfo = data.results?.[0].content ?? null;
-
-          if (!productInfo) {
-            logger.warn(
-              `Product with productId: ${productId} not found via API Request. The ASIN id is probably incorrect.`
-            );
-          } else {
-            logger.info(
-              `Adding Product with ProductId: ${productId} to the PRISMA DB`
-            );
-            const { url, asin, price, title, images, reviews_count, rating } =
-              productInfo;
-            const img = images[0];
-            const userEmail = session?.user?.email;
-
-            // THE OBJECT TO STORE IN PRISMA
-            const data = {
-              userEmail,
-              url,
-              asin,
-              price,
-              title,
-              img,
-              reviews_count,
-              rating,
-            };
-
-            // ADD PRODUCT TO DB
-            await setPrismaData(data);
-          }
-        }
+      return {
+        success: true,
+        message: "Product is now being tracked",
       };
-
-      await scrape();
     } catch (error) {
       if (error instanceof Error) {
         logger.error(error.message);
+        return { success: false, message: error.message };
       } else {
         logger.error("Unexpected error occured while adding product to DB");
+        return {
+          success: false,
+          message: "Unexpected error occured, please try again later.",
+        };
       }
-    } finally {
-      return;
     }
 }

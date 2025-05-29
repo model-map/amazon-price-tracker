@@ -1,9 +1,9 @@
-import { getProducts } from "@/lib/prismaActions";
+import { getUserProducts } from "@/lib/prismaActions";
 import ProductCard from "./ProductCard";
 import { IProduct } from "@/lib/types";
 
 export async function SectionCards() {
-  const getAllProducts = await getProducts();
+  const getAllProducts = await getUserProducts();
 
   return (
     <>
